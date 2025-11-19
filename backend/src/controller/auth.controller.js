@@ -121,6 +121,7 @@ const checkAuth = async (req, res) => {
   try {
 
     const userId = req.user?._id;
+    console.log(userId);
 
     if (userId) {
       res.status(200).json({ user: req.user });

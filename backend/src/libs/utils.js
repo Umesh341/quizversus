@@ -7,11 +7,12 @@ const generateToken = (userId, res) => {
         { userId }, "secret", { expiresIn: '7d' }
     );
     res.cookie("jwt", token, {
-        httpOnly: true, // prevent XSS attacks cross-site scripting attacks
-       // set secure flag in production
-        sameSite: 'Strict', // adjust sameSite attribute as needed
-        maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days in milliseconds
-    });  
+  httpOnly: true,
+  secure: true,        // MUST be true on HTTPS
+  sameSite: "none",    // MUST be "none" for cross-site
+  maxAge: 7 * 24 * 60 * 60 * 1000
+});
+
 
     return token;
 }
