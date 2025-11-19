@@ -5,7 +5,7 @@ let socket;
 // Initialize the socket connection
 export const initializeSocket = (userId) => {
   if (!socket) {
-    socket = io("https://guizbackend.onrender.com", {
+    socket = io("https://guizbackend.onrender.com/", {
       transports: ["websocket"],
       withCredentials: true,
       auth: {

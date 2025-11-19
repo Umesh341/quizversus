@@ -29,6 +29,44 @@ app.use(cors({
     methods: ["GET", "POST", "PUT", "DELETE"], // allow cookies to 
 }));
 
+// =====================================
+const allowedOrigins = [
+  "https://quizversus.vercel.app",
+  "http://localhost:5173"
+];
+
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+
+  console.log("Request received from origin:", origin);
+
+  if (!origin) {
+    // Allow non-browser or preflight requests
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    return next();
+  }
+
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  }
+
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+
+  next();
+});
+
+
+
+
+
+
+
+
 
  const server = http.createServer(app);
 const io = new Server(server)
