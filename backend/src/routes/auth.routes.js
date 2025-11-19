@@ -11,7 +11,7 @@ router.route('/register').post(registerUser);
 router.route('/verify/:email').post(emailVerification);
 router.route('/login').post(loginUser);
 router.route('/checkauth').post(protectedRoute, checkAuth);
-router.route('/logout').post(protectedRoute, logoutUser);
+router.route('/logout').post(logoutUser);
 router.route('/getroom/:roomCode').get(getRoom);
 router.route('/getroom/:roomCode').get(getRoom);
 router.route('/leaveroom/:roomCode').post(leaveRoom);

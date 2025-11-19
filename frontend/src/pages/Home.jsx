@@ -42,7 +42,7 @@ const Home = () => {
 
         <div id="company">
             <div id="company-title" className="flex justify-center">
-                <span className="text-3xl font-medium text-blue-800">| Company Name |</span>
+                <span className="text-3xl font-medium text-blue-800">| Features |</span>
             </div>
 
             <div id="lines" className="mt-12">

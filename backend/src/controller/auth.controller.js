@@ -138,7 +138,11 @@ const checkAuth = async (req, res) => {
 
 const logoutUser = async (req, res) => {
   try {
-    res.clearCookie("jwt", { httpOnly: true, sameSite: "lax" });
+    res.clearCookie("jwt", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none"
+    });
     res.status(200).json({ message: "Logout successful" });
   } catch (error) {
     console.log(error.message);

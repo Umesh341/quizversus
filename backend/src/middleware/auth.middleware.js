@@ -4,7 +4,7 @@ import { UserModel } from '../model/user.model.js';
 const protectedRoute = async (req, res, next) => {
     const token = req.cookies.jwt;
     if (!token) {
-           res.clearCookie('jwt', { httpOnly: true, sameSite: 'lax' });
+           res.clearCookie('jwt', { httpOnly: true, secure: true, sameSite: 'none' });
         return res.status(401).json({message: "not authorized"});
     }   
     try {
