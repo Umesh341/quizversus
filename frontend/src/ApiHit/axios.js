@@ -1,10 +1,7 @@
-import axios from 'axios';
+import axios from "axios";
 
 export const axiosInstance = axios.create({
-    baseURL: import.meta.env.MODE === "production" ? "https://guizbackend.onrender.com/api" : "http://localhost:8000/api",
-    withCredentials: true,
-    headers: { "Content-Type": "application/json" }
-    
+  baseURL: "https://guizbackend.onrender.com/api",
+  withCredentials: true,
+  headers: { "Content-Type": "application/json" },
 });
-
-
