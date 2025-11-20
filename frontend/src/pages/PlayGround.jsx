@@ -29,6 +29,7 @@ const PlayGround = () => {
   const [hasAnswered, setHasAnswered] = useState(false);
   const [answerFeedback, setAnswerFeedback] = useState(null);
   const [isQuestionLocked, setIsQuestionLocked] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     // Initialize the socket connection
@@ -184,6 +185,7 @@ const PlayGround = () => {
 
 const createRoom = () => {
   console.log("Creating room...",user?._id);
+  setIsLoading(true);
   socket.emit("createRoom", { playerName, userId: user?._id }, (data) => {
     console.log("My room:", data.roomCode);
     console.log("Players:", data.players);
@@ -192,13 +194,16 @@ const createRoom = () => {
     setHostId(user?._id);
     localStorage.setItem("roomCode", data.roomCode);
     setIsRoomJoined(true);
+    setIsLoading(false);
   });
 };
   const joinRoom = () => {
     const code = joinCode.trim();
     if (!code) return alert("Please enter a valid room code.");
     console.log("Joining room:", code);
+    setIsLoading(true);
     socket.emit("joinRoom", { roomCode: code, playerName, userId: user?._id }, (data) => {
+      setIsLoading(false);
       if (data.error) return alert(data.error);
       console.log("Joined:", data.roomCode);
       console.log("Players:", data.players);
@@ -262,6 +267,16 @@ const createRoom = () => {
 
   return (
     <div className="wrapper p-3 mx-auto max-w-5xl">
+      {/* Loader */}
+      {isLoading && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center gap-3">
+            <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-gray-700 font-semibold">Loading...</p>
+          </div>
+        </div>
+      )}
+
       <div className="wrapper">
         {!isRoomJoined ? (
           <>
