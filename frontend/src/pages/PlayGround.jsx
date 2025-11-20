@@ -1,8 +1,8 @@
-import React, { useState, useEffect, use } from "react";
+import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 import { useAuthStore } from "../Store/authStore";
 import { btn } from "../components/styleComponent.js";
-import { set } from "mongoose";
+import {Toaster,toast } from "react-hot-toast";
 
 
 let socket; // Declare the socket variable outside the component
@@ -36,7 +36,7 @@ const PlayGround = () => {
     // Initialize the socket connection
 
     if (!socket) {
-      socket = io("https://guizbackend.onrender.com/", {
+      socket = io(import.meta.env.MODE === "production" ? import.meta.env.BACKEND_URL : "http://localhost:8000/", {
         transports: ["websocket"],
         withCredentials: true,
         auth: {
@@ -133,7 +133,7 @@ const PlayGround = () => {
       
       // Show final results
       const results = sortedPlayers.map((p, i) => `${i + 1}. ${p.name}: ${p.score} points`).join('\n');
-      alert(`🏆 Game Over!\n\nWinner: ${winner.name} with ${winner.score} points!\n\nFinal Scores:\n${results}`);
+      alert(`🏆 Game Over!\n\nWinner: ${winner?.name} with ${winner?.score} points!\n\nFinal Scores:\n${results}`);
     });
 
     // Automatically rejoin the room if the user was in one before the refresh
@@ -163,7 +163,7 @@ const PlayGround = () => {
   }
  // Listen for roomDeleted event
   socket.on("roomDeleted", ({ roomCode: deletedRoomCode }) => {
-      alert("The room has been deleted.");
+     toast("The room has been deleted.");
    console.log(`Received roomDeleted event for room: ${deletedRoomCode}`);
    console.log(`Current roomCode: ${roomCode}`);
   
@@ -200,8 +200,9 @@ const createRoom = () => {
     setPlayers(data.players);
     setHostId(user?._id);
     localStorage.setItem("roomCode", data.roomCode);
-  
+    setIsRoomJoined(true);
     setIsLoading(false);
+    toast.success("Room created successfully!");
   });
 };
   const joinRoom = () => {
@@ -211,9 +212,7 @@ const createRoom = () => {
     setIsLoading(true);
     socket.emit("joinRoom", { roomCode: code, playerName, userId: user?._id }, (data) => {
       setIsLoading(false);
-      if (data.error) return alert(data.error);
-      console.log("Joined:", data.roomCode);
-      console.log("Players:", data.players);
+      if (data.error) return toast.error(data.error);
       localStorage.setItem("roomCode", data.roomCode);
       setRoomCode(data.roomCode);
       setPlayers(data.players);
@@ -221,6 +220,7 @@ const createRoom = () => {
       setHostId(data.hostId);
       setGameState(data.gameState || { isStarted: false, currentQuestion: null, questionNumber: 0 });
       setIsRoomJoined(true);
+      toast.success("Joined room successfully!");
     });
   };
 
@@ -228,6 +228,7 @@ const createRoom = () => {
     console.log("Starting game with:", { roomCode, userId: user?._id });
     socket.emit("startGame", { roomCode, userId: user?._id }, (response) => {
       console.log("Start game response:", response);
+      toast.success("Game started successfully!");
       if (response.error) {
         alert(response.error);
       }
@@ -251,6 +252,7 @@ const createRoom = () => {
 
   const endGame = () => {
     socket.emit("endGame", { roomCode, userId: user?._id }, (response) => {
+
       if (response.error) {
         alert(response.error);
       }
@@ -275,6 +277,7 @@ const createRoom = () => {
   return (
     <div className="wrapper p-3 mx-auto max-w-5xl">
       {/* Loader */}
+      <Toaster position="top-center" reverseOrder={false} />
       {isLoading && (
         <div className="fixed inset-0 bg-white flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center gap-3">
@@ -316,6 +319,7 @@ const createRoom = () => {
               setPlayers([]);
               setIsRoomJoined(false);
               leaveRoom(roomCode, user?._id);
+              toast.success("Left room successfully!");
             }}
           >
             Leave Room
@@ -328,7 +332,7 @@ const createRoom = () => {
     console.log("User ID:", user?._id);
     socket.emit("deleteRoom", { roomCode, userId: user?._id }, (response) => {
       if (response.error) {
-        alert(response.error); // Show error if the user is not the host
+       console.error(response.error); // Show error if the user is not the host
       } else {
         localStorage.removeItem("roomCode");
         setRoomCode("");
