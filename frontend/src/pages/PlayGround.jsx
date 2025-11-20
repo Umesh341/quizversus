@@ -138,12 +138,15 @@ const PlayGround = () => {
    // Automatically rejoin the room if the user was in one before the refresh
   const storedRoomCode = localStorage.getItem("roomCode");
   if (storedRoomCode && !isRoomJoined) {
+    setIsLoading(true);
     socket.emit(
       "joinRoom",
       { roomCode: storedRoomCode, playerName, userId: user?._id },
       (data) => {
+        setIsLoading(false);
         if (data.error) {
           console.error("Error rejoining room:", data.error);
+          localStorage.removeItem("roomCode");
           return;
         }
         setRoomCode(data.roomCode);
