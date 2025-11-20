@@ -103,7 +103,7 @@ io.on("connection", (socket) => {
     const newRoom = await  RoomModel.create({
       roomCode,
        hostId: userId, 
-      players: [{ id: userId, name: playerName }],
+      players: [{ id: userId, name: playerName, score: 0 }],
       messages: [],
     });
 
@@ -124,7 +124,7 @@ io.on("connection", (socket) => {
    // Check if the player already exists in the room
   const playerExists = room.players.some((player) => player.id === userId);
   if (!playerExists) {
-    room.players.push({ id: userId, name: playerName });
+    room.players.push({ id: userId, name: playerName, score: 0 });
     await room.save();
   }
 
