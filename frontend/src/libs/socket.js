@@ -8,6 +8,7 @@ export const initializeSocket = (userId) => {
     socket = io("https://guizbackend.onrender.com/", {
       transports: ["websocket"],
       withCredentials: true,
+      secure: true,
       auth: {
         userId: userId || "guest", // Use userId if available, otherwise default to "guest"
       },
