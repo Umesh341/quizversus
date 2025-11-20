@@ -40,9 +40,9 @@ const MainApp = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/play" element={user ? <PlayGround /> : <Login s/>} />
+          <Route path="/play" element={user ? <PlayGround /> : <Login/>} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={user ? <Profile /> : <Login />} />
           <Route path="/profile" element={ user ? <Profile /> : <Login />} />
           <Route path="/verify/:email" element={<Verify />} />
         </Routes>
