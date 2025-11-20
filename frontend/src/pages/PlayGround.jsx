@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 import { useAuthStore } from "../Store/authStore";
-import { btn } from "../components/styleComponent.js";
+import { btn, dangerBtn } from "../components/styleComponent.js";
 import {Toaster,toast } from "react-hot-toast";
 
 
@@ -290,7 +290,7 @@ const createRoom = () => {
       <div className="wrapper">
         {!isRoomJoined ? (
           <>
-            <button className={btn} onClick={createRoom}>
+            <button className={btn}  onClick={createRoom}>
               Create Room
             </button>
             <div className="flex gap-3 mt-4 w-70">
@@ -307,26 +307,10 @@ const createRoom = () => {
             </div>
           </>
         ) : (
-          <>
-          <button
-            type="button"
-            className={btn}
-            onClick={() => {
-             
-              localStorage.removeItem("roomCode");
-              setRoomCode("");
-              setMessages([]);
-              setPlayers([]);
-              setIsRoomJoined(false);
-              leaveRoom(roomCode, user?._id);
-              toast.success("Left room successfully!");
-            }}
-          >
-            Leave Room
-          </button>
-         <button
+          user?._id === hostId ?(        
+                <button
   type="button"
-  className={btn}
+  className={dangerBtn}
   onClick={() => {
     console.log("Deleting room:", roomCode);
     console.log("User ID:", user?._id);
@@ -345,7 +329,25 @@ const createRoom = () => {
 >
   Delete Room
 </button>
-          </>
+          ) : (
+  
+ <button
+            type="button"
+            className={dangerBtn}
+            onClick={() => {
+             
+              localStorage.removeItem("roomCode");
+              setRoomCode("");
+              setMessages([]);
+              setPlayers([]);
+              setIsRoomJoined(false);
+              leaveRoom(roomCode, user?._id);
+              toast.success("Left room successfully!");
+            }}
+          >
+            Leave Room
+          </button>
+           )
         )}
       </div>
 
