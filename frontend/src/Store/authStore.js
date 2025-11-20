@@ -7,7 +7,7 @@ export const useAuthStore = create((set, get) => ({
   isAuthenticated: false,
   user: null,
   isLoading: false,
-  setIsLoading: () => set((state) => ({ isLoading: !state.isLoading })),
+  setIsLoading: (loading) => set({ isLoading: loading }),
   registerUser: async (formData, navigate) => {
     try {
       console.log(formData);
