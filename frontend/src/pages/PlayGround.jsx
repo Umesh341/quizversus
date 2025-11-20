@@ -36,9 +36,10 @@ const PlayGround = () => {
     // Initialize the socket connection
 
     if (!socket) {
-      socket = io(import.meta.env.MODE === "production" ? import.meta.env.BACKEND_URL + "/" : "http://localhost:8000/", {
+      socket = io(import.meta.env.MODE === "production" ? "https://guizversusbackend.onrender.com/" : "http://localhost:8000/", {
         transports: ["websocket"],
         withCredentials: true,
+        secure: true,
         auth: {
           userId: user?._id || "guest", // Use userId if available, otherwise default to "guest"
         },
