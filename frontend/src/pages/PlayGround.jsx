@@ -145,10 +145,10 @@ const PlayGround = () => {
       "joinRoom",
       { roomCode: storedRoomCode, playerName, userId: user?._id },
       (data) => {
-        setIsLoading(false);
         if (data.error) {
           console.error("Error rejoining room:", data.error);
           localStorage.removeItem("roomCode");
+          setIsLoading(false);
           return;
         }
         setRoomCode(data.roomCode);
@@ -157,11 +157,9 @@ const PlayGround = () => {
         setHostId(data.hostId);
         setGameState(data.gameState || { isStarted: false, currentQuestion: null, questionNumber: 0 });
         setIsRoomJoined(true);
+        setIsLoading(false);
       }
     );
-  } else {
-    // No stored room code, turn off loading
-    setIsLoading(false);
   }
  // Listen for roomDeleted event
   socket.on("roomDeleted", ({ roomCode: deletedRoomCode }) => {
