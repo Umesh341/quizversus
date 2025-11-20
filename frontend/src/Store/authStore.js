@@ -11,7 +11,7 @@ export const useAuthStore = create((set, get) => ({
   registerUser: async (formData, navigate) => {
     try {
       console.log(formData);
-      const res = await axiosInstance.post("/auth/register", formData, {
+      const res = await axiosInstance.post("/api/auth/register", formData, {
         withCredentials: true,
       });
       console.log(res);
@@ -29,7 +29,7 @@ export const useAuthStore = create((set, get) => ({
   loginUser: async (formData, navigate) => {
     try {
       console.log(formData);
-      const res = await axiosInstance.post("/auth/login", formData, {
+      const res = await axiosInstance.post("/api/auth/login", formData, {
         withCredentials: true,
       });
       console.log(res.data);
@@ -49,7 +49,7 @@ export const useAuthStore = create((set, get) => ({
       const { user } = get();
       console.log(user);
       const res = await axiosInstance.post(
-        `/auth/verify/${user.email}`,
+        `/api/auth/verify/${user.email}`,
         { token: token },
         { withCredentials: true }
       );
@@ -62,7 +62,7 @@ export const useAuthStore = create((set, get) => ({
 
   checkAuth: async () => {
     try {
-      const res = await axiosInstance.post("/auth/checkauth",{ withCredentials: true });
+      const res = await axiosInstance.post("/api/auth/checkauth",{ withCredentials: true });
         const tempUser = res.data.user;
         set({ user: tempUser });
         if(res.status!==200){
@@ -77,7 +77,7 @@ export const useAuthStore = create((set, get) => ({
   },
  logoutUser: async () => {
     try {
-      const res = await axiosInstance.post("/auth/logout", { withCredentials: true
+      const res = await axiosInstance.post("/api/auth/logout", { withCredentials: true
       });
       if(res.status!==200){
         set({ user: null });
@@ -93,7 +93,7 @@ export const useAuthStore = create((set, get) => ({
   },
   getRoomInfo: async (roomCode) => {
     try {
-      const res = await axiosInstance.get(`/auth/getroom/${roomCode}`, {
+      const res = await axiosInstance.get(`/api/auth/getroom/${roomCode}`, {
         withCredentials: true,
       });
 
@@ -106,7 +106,7 @@ export const useAuthStore = create((set, get) => ({
   deleteRoom: async (roomCode) => {
     console.log("Deleting room with code:", roomCode);
     try {
-      const res = await axiosInstance.post(`/auth/deleteroom/${roomCode}`, {
+      const res = await axiosInstance.post(`/api/auth/deleteroom/${roomCode}`, {
         withCredentials: true,
       });
       if(res){
@@ -122,7 +122,7 @@ export const useAuthStore = create((set, get) => ({
   },
   leaveRoom: async (roomCode, userId) => {
     try {
-      const res = await axiosInstance.post(`/auth/leaveroom/${roomCode}`, { userId }, {
+      const res = await axiosInstance.post(`/api/auth/leaveroom/${roomCode}`, { userId }, {
         withCredentials: true,
       });
       return res.data;
