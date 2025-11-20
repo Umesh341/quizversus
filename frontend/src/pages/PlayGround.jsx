@@ -2,6 +2,7 @@ import React, { useState, useEffect, use } from "react";
 import { io } from "socket.io-client";
 import { useAuthStore } from "../Store/authStore";
 import { btn } from "../components/styleComponent.js";
+import { set } from "mongoose";
 
 
 let socket; // Declare the socket variable outside the component
@@ -187,6 +188,7 @@ const PlayGround = () => {
       socket.off("scoreUpdate");
       socket.off("questionLocked");
       socket.off("gameEnded");
+      setIsLoading(false);
     };
   }, [user]);
 
