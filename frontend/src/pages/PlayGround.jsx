@@ -2,12 +2,12 @@ import React, { useState, useEffect, use } from "react";
 import { io } from "socket.io-client";
 import { useAuthStore } from "../Store/authStore";
 import { btn } from "../components/styleComponent.js";
-import { set } from "mongoose";
+
 
 let socket; // Declare the socket variable outside the component
 
 const PlayGround = () => {
-  const { getRoomInfo, user, leaveRoom , deleteRoom } = useAuthStore();
+  const { getRoomInfo, user, leaveRoom, deleteRoom, isLoading, setIsLoading } = useAuthStore();
 
   const [joinCode, setJoinCode] = useState("");
   const [roomCode, setRoomCode] = useState(
@@ -30,9 +30,6 @@ const PlayGround = () => {
   const [hasAnswered, setHasAnswered] = useState(false);
   const [answerFeedback, setAnswerFeedback] = useState(null);
   const [isQuestionLocked, setIsQuestionLocked] = useState(false);
-  const [isLoading, setIsLoading] = useState(
-    () => !!localStorage.getItem("roomCode")
-  );
 
   useEffect(() => {
     // Initialize the socket connection

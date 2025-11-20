@@ -10,6 +10,7 @@ import Login from './pages/login';
 import Profile from './pages/Profile';
 import { useAuthStore } from './Store/authStore';
 import PlayGround from './pages/PlayGround';
+import  {Oval} from 'react-loader-spinner';
 
 const App = () => {
 
@@ -22,7 +23,7 @@ const App = () => {
 };
 
 const MainApp = () => {
-    const { checkAuth , user } = useAuthStore();
+    const { checkAuth , user , isLoading } = useAuthStore();
   
   React.useEffect(() => {
     checkAuth();
@@ -40,7 +41,7 @@ const MainApp = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/play" element={user ? <PlayGround /> : <Login/>} />
+          <Route path="/play" element={ isLoading ? <div className='flex items-center justify-center'><Oval /></div> : (user ? <PlayGround /> : <Login/>) } />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={user ? <Profile /> : <Login />} />
           <Route path="/profile" element={ user ? <Profile /> : <Login />} />
