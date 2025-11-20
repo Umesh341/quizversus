@@ -6,8 +6,8 @@ import { loginUser, verifyEmail } from "../ApiHit/Db.js";
 export const useAuthStore = create((set, get) => ({
   isAuthenticated: false,
   user: null,
-  isLoading: !!localStorage.getItem("roomCode"),
-  setIsLoading: (loading) => set({ isLoading: loading }),
+  isLoading: false,
+  setIsLoading: () => set((state) => ({ isLoading: !state.isLoading })),
   registerUser: async (formData, navigate) => {
     try {
       console.log(formData);

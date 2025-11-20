@@ -202,7 +202,7 @@ const createRoom = () => {
     setPlayers(data.players);
     setHostId(user?._id);
     localStorage.setItem("roomCode", data.roomCode);
-    setIsRoomJoined(true);
+  
     setIsLoading(false);
   });
 };
