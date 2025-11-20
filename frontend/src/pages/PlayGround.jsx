@@ -29,7 +29,9 @@ const PlayGround = () => {
   const [hasAnswered, setHasAnswered] = useState(false);
   const [answerFeedback, setAnswerFeedback] = useState(null);
   const [isQuestionLocked, setIsQuestionLocked] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(
+    () => !!localStorage.getItem("roomCode")
+  );
 
   useEffect(() => {
     // Initialize the socket connection
