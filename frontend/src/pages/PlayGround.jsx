@@ -36,7 +36,7 @@ const PlayGround = () => {
     // Initialize the socket connection
 
     if (!socket) {
-      socket = io(import.meta.env.MODE === "production" ? import.meta.env.BACKEND_URL : "http://localhost:8000/", {
+      socket = io(import.meta.env.MODE === "production" ? import.meta.env.BACKEND_URL + "/" : "http://localhost:8000/", {
         transports: ["websocket"],
         withCredentials: true,
         auth: {
