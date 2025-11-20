@@ -27,7 +27,7 @@ app.use(cors({
     origin: process.env.MODE === "production" ? 'https://quizversus.vercel.app' : 'http://localhost:5173', // frontend origin
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"], // allow cookies to 
-}));
+})); 
 
 // =====================================
 const allowedOrigins = [
