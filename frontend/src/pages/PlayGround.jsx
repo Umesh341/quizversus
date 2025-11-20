@@ -13,7 +13,9 @@ const PlayGround = () => {
     localStorage.getItem("roomCode") || ""
   );
   const [playerName, setPlayerName] = useState(user?.username || "Guest");
-  const [players, setPlayers] = useState([]);
+  const [players, setPlayers] = useState([
+    { id: "", name: "", score: 0 }
+  ]);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [isRoomJoined, setIsRoomJoined] = useState(false);
@@ -160,10 +162,10 @@ const PlayGround = () => {
   
       setIsRoomJoined(false);
       console.log(`Room ${deletedRoomCode} has been deleted.`);
-    
       localStorage.removeItem("roomCode");
       setRoomCode("");
       setMessages([]);
+      setPlayers([]);
 
   });
 
@@ -186,6 +188,7 @@ const createRoom = () => {
     console.log("My room:", data.roomCode);
     console.log("Players:", data.players);
     setRoomCode(data.roomCode);
+    setPlayers(data.players);
     setHostId(user?._id);
     localStorage.setItem("roomCode", data.roomCode);
     setIsRoomJoined(true);
@@ -288,6 +291,7 @@ const createRoom = () => {
               localStorage.removeItem("roomCode");
               setRoomCode("");
               setMessages([]);
+              setPlayers([]);
               setIsRoomJoined(false);
               leaveRoom(roomCode, user?._id);
             }}
@@ -307,6 +311,7 @@ const createRoom = () => {
         localStorage.removeItem("roomCode");
         setRoomCode("");
         setMessages([]);
+        setPlayers([]);
         setIsRoomJoined(false);
       }
     });
