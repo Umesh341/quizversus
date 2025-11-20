@@ -158,6 +158,9 @@ const PlayGround = () => {
         setIsRoomJoined(true);
       }
     );
+  } else {
+    // No stored room code, turn off loading
+    setIsLoading(false);
   }
  // Listen for roomDeleted event
   socket.on("roomDeleted", ({ roomCode: deletedRoomCode }) => {
