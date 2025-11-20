@@ -33,7 +33,7 @@ const PlayGround = () => {
 
   useEffect(() => {
     // Initialize the socket connection
-    setIsLoading(true);
+
     if (!socket) {
       socket = io("https://guizbackend.onrender.com/", {
         transports: ["websocket"],

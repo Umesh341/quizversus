@@ -41,7 +41,7 @@ const MainApp = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/play" element={ isLoading ? <div className='flex items-center justify-center'><Oval /></div> : (user ? <PlayGround /> : <Login/>) } />
+          <Route path="/play" element={ isLoading ? <div className='flex items-center justify-center h-screen'><Oval /></div> : (user ? <PlayGround /> : <Login/>) } />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={user ? <Profile /> : <Login />} />
           <Route path="/profile" element={ user ? <Profile /> : <Login />} />
