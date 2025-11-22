@@ -26,7 +26,7 @@ app.use(cookieParser());
 // Middleware to parse form data (application/x-www-form-urlencoded)
 app.use(express.urlencoded({extended: true, limit: "25kb"})) 
 app.use(cors({
-    origin: 'https://quizversus.vercel.app', // frontend origin
+    origin:  process.env.MODE === 'development' ? "http://localhost:5173" : 'https://quizversus.vercel.app', // frontend origin
     credentials: true,
     secure: true,
     methods: ["GET", "POST", "PUT", "DELETE"], // allow cookies to 
