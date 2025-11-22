@@ -11,6 +11,7 @@ import Profile from './pages/Profile';
 import { useAuthStore } from './Store/authStore';
 import PlayGround from './pages/PlayGround';
 import  {Oval} from 'react-loader-spinner';
+import { Toaster } from 'react-hot-toast';
 
 const App = () => {
 
@@ -37,6 +38,7 @@ const MainApp = () => {
   return (
     <>
       {!shouldHideNavbar && <Navbar />}
+      <Toaster />
       <div className=" ">
         <Routes>
           <Route path="/" element={<Home />} />

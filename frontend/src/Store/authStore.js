@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { axiosInstance } from "../ApiHit/axios.js";
 import { loginUser, verifyEmail } from "../ApiHit/Db.js";
-
+import toast from "react-hot-toast";
 
 export const useAuthStore = create((set, get) => ({
   isAuthenticated: false,
@@ -15,11 +15,8 @@ export const useAuthStore = create((set, get) => ({
         withCredentials: true,
       });
       console.log(res);
-      const tempUser = res.data.user;
-      set({ user: tempUser });
-      const { user } = get();
-
-      navigate("/verify/" + user.email);
+   toast.success("OTP is sent to your email.");
+      navigate("/verify/" + formData.email);
       return res;
     } catch (error) {
       throw error;
@@ -35,29 +32,37 @@ export const useAuthStore = create((set, get) => ({
       console.log(res.data);
       const tempUser = res.data.user;
       set({ user: tempUser });
-      alert("Login Successful");
+      toast.success("Login Successful");
       navigate("/");
-      return res.data;
+      return res;
     } catch (error) {
-      throw error;
+      console.log("error: ", error.response.data);
+      toast.error(error.response.data.message);
+          if(error.status==402){
+             navigate("/verify/" + formData.email);
+
+      }
     }
   },
 
-  verifyEmail: async (token) => {
+  verifyEmail: async (token,navigate,email) => {
     try {
-      console.log(token);
-      const { user } = get();
-      console.log(user);
+    
+      console.log(email);
       const res = await axiosInstance.post(
-        `/auth/verify/${user.email}`,
+        `/auth/verify/${email}`,
         { token: token },
         { withCredentials: true }
       );
-      console.log(res);
+      toast.success("Email verified successfully");
+      navigate("/profile");
       return res;
     } catch (error) {
       console.log("error: ", error);
+      if(error.status==409){
+        toast.error("Invalid OTP. Please try again.");
     }
+  }
   },
 
   checkAuth: async () => {

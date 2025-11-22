@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAuthStore } from "../Store/authStore";
 function Verify() {
+  const navigate = useNavigate();
+  const { email } = useParams();
 
   const { verifyEmail } = useAuthStore();
-  const navigate = useNavigate();
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
    // Extract email from URL
@@ -16,7 +17,7 @@ function Verify() {
     e.preventDefault();
     setLoading(true);
     try {
-      await verifyEmail(otp);
+      await verifyEmail(otp, navigate,email);
     } catch (error) {
       console.error("Error during OTP verification:", error);
     } finally {

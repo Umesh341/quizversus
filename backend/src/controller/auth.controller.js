@@ -82,7 +82,7 @@ const emailVerification = async (req, res) => {
         console.log(user);
         res.status(202).json({ message: "Email verified successfully" });
       } else {
-        res.status(209).json({ message: "Invalid verification token" });
+        res.status(409).json({ message: "Invalid verification token" });
         console.log(isMatch);
       }
     }
@@ -98,11 +98,15 @@ const loginUser = async (req, res) => {
 
     const user = await UserModel.findOne({ email });
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: "Invalid credentials" });
     }
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return res.status(401).json({ message: "Invalid password" });
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+    const isVerified = user.isVerified;
+    if (!isVerified) {
+      return res.status(402).json({ message: "Email not verified" });
     }
     const userClient = user.toObject();
 
@@ -122,7 +126,8 @@ const checkAuth = async (req, res) => {
 
     const userId = req.user?._id;
     console.log(userId);
-
+    const isVerified = req.user?.isVerified;
+    console.log(isVerified);
     if (userId) {
       res.status(200).json({ user: req.user });
     } else {
