@@ -55,6 +55,8 @@ export const useAuthStore = create((set, get) => ({
         { withCredentials: true }
       );
       toast.success("Email verified successfully");
+      const tempUser = res.data.user;
+      set({ user: tempUser });
       navigate("/profile");
       return res;
     } catch (error) {
