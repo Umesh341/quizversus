@@ -17,7 +17,7 @@ export const useAuthStore = create((set, get) => ({
       console.log(res);
    toast.success("OTP is sent to your email.");
       navigate("/verify/" + formData.email);
-      return res;
+      return;
     } catch (error) {
       throw error;
     }
