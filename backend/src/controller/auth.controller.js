@@ -94,6 +94,7 @@ const emailVerification = async (req, res) => {
 const loginUser = async (req, res) => {
   // Implement login logic here
   try {
+    const verificationToken = await generateVerificationToken();
     const { email, password } = req.body;
 
     const user = await UserModel.findOne({ email });
@@ -106,8 +107,10 @@ const loginUser = async (req, res) => {
     }
     const isVerified = user.isVerified;
     if (!isVerified) {
-      await emailSender(user.verificationToken, email);
+      user.verificationToken = await bcrypt.hash(verificationToken, 5);
+      await user.save();
       res.status(402).json({ message: "Email not verified" });
+      emailSender(verificationToken, email);
       return;
     }
     const userClient = user.toObject();
