@@ -24,11 +24,20 @@ const registerUser = async (req, res) => {
       console.log(existingUser);
       existingUser.verificationToken = hashVerificationToken;
       await existingUser.save();
+      
+      // Send email before responding
+      try {
+        await emailSender(verificationToken, email);
+        console.log("✅ Verification email sent to existing user");
+      } catch (emailError) {
+        console.error("❌ Failed to send verification email:", emailError);
+        return res.status(500).json({ message: "Failed to send verification email" });
+      }
+      
       res.json({
         message: "User with this email already exists",
         user: existingUser,
       });
-      await emailSender(verificationToken, email);
       return;
     }
 
@@ -42,13 +51,22 @@ const registerUser = async (req, res) => {
       password: hashPassword,
       verificationToken: hashVerificationToken,
     });
+    
+    // Send email before responding
+    console.log("Attempting to send verification email...");
+    try {
+      await emailSender(verificationToken, email);
+      console.log("✅ Verification email sent to new user");
+    } catch (emailError) {
+      console.error("❌ Failed to send verification email:", emailError);
+      return res.status(500).json({ message: "User created but failed to send verification email" });
+    }
+    
     // JWt generation and setting cookie
     res.status(201).json({
       message: "Registration successful! Please verify your email.",
       user: newUser,
     });
-    console.log("first");
-    await emailSender(verificationToken, email);
   } catch (error) {
     console.log(error);
   }

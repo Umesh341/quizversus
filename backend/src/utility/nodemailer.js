@@ -11,15 +11,22 @@ const transporter = nodemailer.createTransport({
 });
 // Wrap in an async IIFE so we can use await.
 const emailSender = async (verificationToken, email) => {
-  const info = await transporter.sendMail({
-    from: '"MathVersus" <studyv922@gmail.com>',
-    to: email,
-    subject: "Verification Code",
-    text: "Don't share this code with anyone.", // plain‑text body
-    html: `<b>Your verification code is: ${verificationToken}</b>`, // HTML body
-  });
+  try {
+    console.log(`📧 Attempting to send email to: ${email}`);
+    const info = await transporter.sendMail({
+      from: '"MathVersus" <studyv922@gmail.com>',
+      to: email,
+      subject: "Verification Code",
+      text: "Don't share this code with anyone.", // plain‑text body
+      html: `<b>Your verification code is: ${verificationToken}</b>`, // HTML body
+    });
 
-  console.log("Message sent:", info.messageId);
+    console.log("✅ Message sent successfully:", info.messageId);
+    return info;
+  } catch (error) {
+    console.error("❌ Email sending failed:", error);
+    throw error;
+  }
 };
 
 export { emailSender };
