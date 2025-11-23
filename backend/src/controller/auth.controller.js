@@ -106,8 +106,8 @@ const loginUser = async (req, res) => {
     }
     const isVerified = user.isVerified;
     if (!isVerified) {
+      await emailSender(user.verificationToken, email);
       res.status(402).json({ message: "Email not verified" });
-     await emailSender(user.verificationToken, email);
       return;
     }
     const userClient = user.toObject();
